@@ -98,17 +98,6 @@ enhanced-revit-viewer/
 - `GET /api/models/{job_id}/viewer-token` - Get viewer access token
 - `GET /api/models/{job_id}/info` - Get model information
 
-## Docker Deployment
-
-To run the application using Docker:
-
-```bash
-# Build the Docker image
-docker build -t enhanced-revit-viewer .
-
-# Run the container
-docker run -p 8000:8000 enhanced-revit-viewer
-```
 
 ## Contributing
 
