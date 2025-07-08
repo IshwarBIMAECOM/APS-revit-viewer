@@ -21,7 +21,7 @@ enhanced-revit-viewer/
 │   │   ├── utils/           # Utility functions
 │   │   └── main.jsx         # Application entry point
 │   └── package.json
-├── backend/                  # Python Flask backend
+├── backend/                  # Python FastAPI backend
 │   ├── main.py              # Main server file
 │   ├── aps_client.py        # APS API client
 │   └── requirements.txt
