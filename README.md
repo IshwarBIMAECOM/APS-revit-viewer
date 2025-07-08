@@ -1,0 +1,131 @@
+# Enhanced Revit Viewer
+
+A modern web application for viewing and interacting with Revit models using Autodesk Platform Services (APS) Viewer.
+
+## Features
+
+- **3D Model Viewing**: Load and display Revit models in a web browser
+- **Interactive Controls**: Pan, zoom, rotate, and navigate through 3D models
+- **Material Override**: Apply custom materials to model geometry
+- **Studio Lighting**: Professional lighting setup for better model visualization
+- **Responsive Design**: Works on desktop and mobile devices
+- **Real-time Processing**: Track model processing status in real-time
+
+## Project Structure
+
+```
+enhanced-revit-viewer/
+├── frontend/                 # React frontend application
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   ├── utils/           # Utility functions
+│   │   └── main.jsx         # Application entry point
+│   └── package.json
+├── backend/                  # Python Flask backend
+│   ├── main.py              # Main server file
+│   ├── aps_client.py        # APS API client
+│   └── requirements.txt
+├── docker/                   # Docker configuration
+└── README.md
+```
+
+## Prerequisites
+
+- Node.js (v16 or higher)
+- Python 3.8 or higher
+- Autodesk Platform Services account
+- Docker (optional, for containerized deployment)
+
+## Installation
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+### Backend Setup
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Set up environment variables (create a `.env` file):
+   ```
+   APS_CLIENT_ID=your_client_id
+   APS_CLIENT_SECRET=your_client_secret
+   APS_BUCKET_KEY=your_bucket_key
+   ```
+
+5. Start the backend server:
+   ```bash
+   python main.py
+   ```
+
+## Usage
+
+1. Start both frontend and backend servers
+2. Open your browser and navigate to `http://localhost:5173`
+3. Upload a Revit file (.rvt) through the web interface
+4. Wait for the model to be processed and translated
+5. View the 3D model in the interactive viewer
+
+## API Endpoints
+
+- `POST /api/upload` - Upload Revit files
+- `GET /api/models/{job_id}/status` - Get processing status
+- `GET /api/models/{job_id}/viewer-token` - Get viewer access token
+- `GET /api/models/{job_id}/info` - Get model information
+
+## Docker Deployment
+
+To run the application using Docker:
+
+```bash
+# Build the Docker image
+docker build -t enhanced-revit-viewer .
+
+# Run the container
+docker run -p 8000:8000 enhanced-revit-viewer
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Autodesk Platform Services for the 3D viewer technology
+- React and Vite for the frontend framework
+- Flask for the backend API 

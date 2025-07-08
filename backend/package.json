@@ -1,0 +1,24 @@
+{
+    "name": "simple-revit-viewer-backend",
+    "version": "1.0.0",
+    "description": "Simple Revit Viewer with APS integration only",
+    "main": "main_simplified.py",
+    "scripts": {
+        "start": "python main_simplified.py",
+        "dev": "uvicorn main_simplified:app --reload --host 0.0.0.0 --port 8000"
+    },
+    "dependencies": {},
+    "engines": {
+        "node": ">=16.0.0",
+        "npm": ">=6.0.0"
+    },
+    "keywords": [
+        "aps",
+        "autodesk",
+        "revit",
+        "viewer",
+        "simple"
+    ],
+    "author": "Simple Revit Viewer Team",
+    "license": "MIT"
+} 
