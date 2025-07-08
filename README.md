@@ -25,16 +25,14 @@ enhanced-revit-viewer/
 │   ├── main.py              # Main server file
 │   ├── aps_client.py        # APS API client
 │   └── requirements.txt
-├── docker/                   # Docker configuration
-└── README.md
+
 ```
 
 ## Prerequisites
 
 - Node.js (v16 or higher)
 - Python 3.8 or higher
-- Autodesk Platform Services account
-- Docker (optional, for containerized deployment)
+
 
 ## Installation
 
