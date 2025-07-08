@@ -121,3 +121,6 @@ backend/models/processed/
 # Ignore large model and binary files
 Table_Airfield_3.glb
 2024.bin 
+
+# Ignore docker folder
+docker/ 
