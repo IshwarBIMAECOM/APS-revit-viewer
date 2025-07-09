@@ -37,10 +37,10 @@ enhanced-revit-viewer/
    APS_CLIENT_SECRET=your_aps_client_secret_here
    APS_BUCKET_KEY=your_bucket_key_here
    
-   # Optional: Server Configuration
-   HOST=0.0.0.0
-   PORT=8000
-   DEBUG=false
+  # App Settings
+  DEBUG=True
+  UPLOAD_DIR=./models/temp
+  PROCESSED_DIR=./models/processed
    ```
    
    **How to get APS credentials:**
