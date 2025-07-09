@@ -50,8 +50,9 @@ enhanced-revit-viewer/
    3. Navigate to "My Apps" in the developer portal
    4. Create a new app or use an existing one
    5. Copy the Client ID and Client Secret from your app settings
-   6. Create a bucket in the Data Management API section
-   7. Copy the Bucket Key
+      # Optional
+   7. Create a bucket in the Data Management API section
+   8. Copy the Bucket Key
    
    **Important Security Notes:**
    - Never commit your `.env` file to version control
