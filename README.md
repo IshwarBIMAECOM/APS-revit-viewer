@@ -27,7 +27,38 @@ enhanced-revit-viewer/
 │   └── requirements.txt
 
 ```
-
+   **Environment Variables Setup:**
+   
+   Create a `.env` file in the root directory of the project with the following variables:
+   
+   ```env
+   # Autodesk Platform Services (APS) Credentials
+   APS_CLIENT_ID=your_aps_client_id_here
+   APS_CLIENT_SECRET=your_aps_client_secret_here
+   APS_BUCKET_KEY=your_bucket_key_here
+   
+   # Optional: Server Configuration
+   HOST=0.0.0.0
+   PORT=8000
+   DEBUG=false
+   ```
+   
+   **How to get APS credentials:**
+   
+   1. Go to [Autodesk Platform Services](https://platform.autodesk.com/)
+   2. Sign in with your Autodesk account
+   3. Navigate to "My Apps" in the developer portal
+   4. Create a new app or use an existing one
+   5. Copy the Client ID and Client Secret from your app settings
+   6. Create a bucket in the Data Management API section
+   7. Copy the Bucket Key
+   
+   **Important Security Notes:**
+   - Never commit your `.env` file to version control
+   - Keep your credentials secure and don't share them
+   - The `.env` file is already included in `.gitignore`
+   - Use different credentials for development and production
+     
 ## Prerequisites
 
 - Node.js (v16 or higher)
