@@ -29,7 +29,7 @@ enhanced-revit-viewer/
 ```
    **Environment Variables Setup:**
    
-   Create a `.env` file in the root directory of the project with the following variables:
+   Create a `.env` file in the backend folder of the project with the following variables:
    
    ```env
    # Autodesk Platform Services (APS) Credentials
