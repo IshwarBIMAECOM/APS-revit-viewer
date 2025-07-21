@@ -1,5 +1,21 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import axios from 'axios'
+
+/**
+ * ViewerDemo Component
+ * 
+ * This component integrates with APS Viewer extensions following the official 
+ * APS extensions repository pattern:
+ * - Uses extensionloader.js for dynamic extension loading
+ * - Follows event-driven architecture with custom events
+ * - Implements proper cleanup with extension unloading
+ * 
+ * Extension Integration Pattern:
+ * 1. extensionloader.js handles extension registration and loading
+ * 2. Extensions are loaded via "loadextension" custom events
+ * 3. Extensions are unloaded via "unloadextension" custom events
+ * 4. Viewer instance is shared via "viewerinstance" custom events
+ */
 // Add import for THREE
 const THREE = window.THREE || {};
 
@@ -140,27 +156,22 @@ const ViewerDemo = ({ jobData }) => {
             setupStudioLighting();
         }
     };
+    const handleGeometryLoaded = async (event) => {
+        logViewerEvent('GEOMETRY_LOADED_EVENT', event)
+        setUiState(prev => ({...prev, geometryReady: true}))
+        setLoading(false)
+        if (viewer) {
+            viewer.fitToView()
+            
+            // Extension loading moved to viewer initialization phase
+            console.log('🎯 Geometry loaded, viewer is ready');
+        }  
+    }
 
-    const handleGeometryLoaded = (event) => {
-        logViewerEvent('GEOMETRY_LOADED_EVENT', event);
-        setUiState(prev => ({...prev, geometryReady: true}));
-        setLoading(false);
-        if (viewer && viewer.impl){
-            viewer.fitToView();
-            // --- Material override here ---
-            const matteGreyMaterial = new THREE.MeshPhongMaterial({
-                color: 0x888888,
-                flatShading: true,
-                reflectivity: 0.0
-            });
-            overrideAllMaterials(viewer, matteGreyMaterial);
-            viewer.impl.invalidate(true, true, true); // Force full redraw
-        }
-    };
-
-    const handleObjectTreeCreated = (event) => {
+    const handleObjectTreeCreated = async (event) => {
         logViewerEvent('OBJECT_TREE_CREATED_EVENT', event);
         internalStateRef.current.objectTreeCreated = true;
+        
     };
 
     const handleObjectTreeUnavailable = (event) => {
@@ -236,7 +247,7 @@ const ViewerDemo = ({ jobData }) => {
         
         // Core Events
         viewerInstance.addEventListener(Autodesk.Viewing.VIEWER_STATE_RESTORED_EVENT, handleViewerReady);
-        viewerInstance.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, handleGeometryLoaded);
+        viewerInstance.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, handleGeometryLoaded)
         viewerInstance.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, handleObjectTreeCreated);
         viewerInstance.addEventListener(Autodesk.Viewing.OBJECT_TREE_UNAVAILABLE_EVENT, handleObjectTreeUnavailable);
         
@@ -265,7 +276,7 @@ const ViewerDemo = ({ jobData }) => {
     };
     const setupBasicMode = (viewerInstance) => {
         viewerInstance.setTheme('light-theme');
-        // ❌ REMOVED: viewerInstance.setBackgroundColor() - will be called after renderer is ready
+        
         viewerInstance.setLightPreset(0);
         viewerInstance.setEnvMapBackground(true);
     };
@@ -308,7 +319,7 @@ const ViewerDemo = ({ jobData }) => {
                     }
                     
                     console.log('✅ Viewer implementation ready!');
-                    
+
                     // Start the viewer UI
                     viewerInstance.start();
                     await viewerInstance.loadExtension('Autodesk.DefaultTools.NavTools', {});
@@ -321,6 +332,7 @@ const ViewerDemo = ({ jobData }) => {
                       documentId,
                       (doc) => {
                         const defaultModel = doc.getRoot().getDefaultGeometry();
+                        // This will trigger GEOMETRY_LOADED_EVENT which loads ClayExtension
                         viewerInstance.loadDocumentNode(doc, defaultModel);
                       },
                       (error) => {
@@ -421,6 +433,26 @@ const ViewerDemo = ({ jobData }) => {
                         }, 100);
                         
                         setLoading(false);
+                        
+                        // Emit viewer instance event for extensionloader (Official Pattern)
+                        // Do this after viewer is fully initialized, not waiting for geometry
+                        console.log('🎯 Emitting viewerinstance event for extensionloader');
+                        const ViewerInstance = new CustomEvent("viewerinstance", {
+                            detail: { viewer: viewerInstance }
+                        });
+                        document.dispatchEvent(ViewerInstance);
+                        console.log('✅ viewerinstance event dispatched');
+                        
+                        // Load ClayExtension programmatically using official pattern
+                        console.log('🎯 Loading ClayExtension via extensionloader...');
+                        const LoadExtensionEvent = new CustomEvent("loadextension", {
+                            detail: { 
+                                extension: "ClayExtension", 
+                                viewer: viewerInstance 
+                            }
+                        });
+                        document.dispatchEvent(LoadExtensionEvent);
+                        console.log('✅ loadextension event dispatched for ClayExtension');
                     }, 500);
                 };
                 
@@ -433,24 +465,12 @@ const ViewerDemo = ({ jobData }) => {
             setLoading(false);
         }
     };
-    // Utility: Override all materials in the scene using the object tree
-    function overrideAllMaterials(viewer, material) {
-        if (!viewer || !viewer.model) return;
-        viewer.model.getObjectTree(function (tree) {
-            tree.enumNodeChildren(tree.getRootId(), function (dbId) {
-                viewer.model.getData().instanceTree.enumNodeFragments(dbId, function (fragId) {
-                    const fragList = viewer.model.getFragmentList();
-                    fragList.setMaterial(fragId, material);
-                });
-            }, true); // true for recursive
-        });
-        viewer.impl.invalidate(true);
-    }
+
     const loadModel = async(viewerInstance) => {
         try {
             setLoading(true);
             await loadBasicModel(viewerInstance);
-            // Removed material override from here; now handled in handleGeometryLoaded
+            
         } catch (error) {
             setLoading(false);
         }
@@ -464,6 +484,13 @@ const ViewerDemo = ({ jobData }) => {
             viewer.removeEventListener(Autodesk.Viewing.PROGRESS_UPDATE_EVENT, handleProgressUpdate);
             viewer.removeEventListener(Autodesk.Viewing.TOOLBAR_CREATED_EVENT, handleToolbarCreated);
             viewer.removeEventListener(Autodesk.Viewing.ERROR_EVENT, handleError);
+            
+            // Unload ClayExtension using official pattern
+            const UnloadExtensionEvent = new CustomEvent("unloadextension", {
+                detail: { extension: "ClayExtension", viewer: viewer }
+            });
+            document.dispatchEvent(UnloadExtensionEvent);
+            
             if (viewer.impl && viewer.impl.dispose) {
                 viewer.impl.dispose();
             }
@@ -514,6 +541,10 @@ const ViewerDemo = ({ jobData }) => {
             
             console.log('🎯 Viewer instance created:', viewerInstance);
             setViewer(viewerInstance);
+            
+            // Make viewer globally accessible for debugging
+            window.viewer = viewerInstance;
+            console.log('🌐 Viewer made globally accessible as window.viewer');
             
             setupEventListeners(viewerInstance);
             setupBasicMode(viewerInstance);

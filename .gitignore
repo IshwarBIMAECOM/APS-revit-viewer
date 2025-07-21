@@ -123,4 +123,7 @@ Table_Airfield_3.glb
 2024.bin 
 
 # Ignore docker folder
-docker/ 
+docker/
+
+# Serena development files
+.serena/ 

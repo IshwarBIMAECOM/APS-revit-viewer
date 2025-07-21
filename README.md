@@ -26,40 +26,9 @@ enhanced-revit-viewer/
 │   ├── aps_client.py        # APS API client
 │   └── requirements.txt
 
+
 ```
-   **Environment Variables Setup:**
-   
-   Create a `.env` file in the backend folder of the project with the following variables:
-   
-   ```env
-   # Autodesk Platform Services (APS) Credentials
-   APS_CLIENT_ID=your_aps_client_id_here
-   APS_CLIENT_SECRET=your_aps_client_secret_here
-   APS_BUCKET_KEY=your_bucket_key_here
-   
-  # App Settings
-  DEBUG=True
-  UPLOAD_DIR=./models/temp
-  PROCESSED_DIR=./models/processed
-   ```
-   
-   **How to get APS credentials:**
-   
-   1. Go to [Autodesk Platform Services](https://platform.autodesk.com/)
-   2. Sign in with your Autodesk account
-   3. Navigate to "My Apps" in the developer portal
-   4. Create a new app or use an existing one
-   5. Copy the Client ID and Client Secret from your app settings
-      ### Optional
-   7. Create a bucket in the Data Management API section
-   8. Copy the Bucket Key
-   
-   **Important Security Notes:**
-   - Never commit your `.env` file to version control
-   - Keep your credentials secure and don't share them
-   - The `.env` file is already included in `.gitignore`
-   - Use different credentials for development and production
-     
+
 ## Prerequisites
 
 - Node.js (v16 or higher)
@@ -110,9 +79,11 @@ enhanced-revit-viewer/
    APS_BUCKET_KEY=your_bucket_key
    ```
 
+
+
 5. Start the backend server:
    ```bash
-   python main.py
+   uvicorn main:app --reload
    ```
 
 ## Usage
@@ -139,6 +110,38 @@ enhanced-revit-viewer/
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## Troubleshooting
+
+### Common Setup Issues
+
+**Environment Variables Not Loading:**
+- Ensure your `.env` file is in the root directory (same level as `README.md`)
+- Check that there are no spaces around the `=` sign in your `.env` file
+- Restart your backend server after making changes to `.env`
+
+**APS Authentication Errors:**
+- Verify your Client ID and Client Secret are correct
+- Ensure your APS app has the necessary permissions enabled
+- Check that your bucket key is valid and accessible
+
+**Model Processing Issues:**
+- Ensure your Revit file (.rvt) is not corrupted
+- Check that the file size is within APS limits
+- Verify your APS account has sufficient credits for translation
+
+**Frontend Connection Issues:**
+- Ensure the backend server is running on the correct port
+- Check that CORS is properly configured
+- Verify the frontend is pointing to the correct backend URL
+
+### Getting Help
+
+If you encounter issues:
+1. Check the browser console for frontend errors
+2. Check the terminal running the backend for server errors
+3. Verify all environment variables are set correctly
+4. Ensure all dependencies are installed properly
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
@@ -147,4 +150,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Autodesk Platform Services for the 3D viewer technology
 - React and Vite for the frontend framework
-- Flask for the backend API 
+
