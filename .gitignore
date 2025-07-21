@@ -77,7 +77,7 @@ dist
 
 # Gatsby files
 .cache/
-public
+# public  # Commented out to allow frontend/public folder
 
 # Storybook build outputs
 .out

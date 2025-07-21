@@ -1,0 +1,21 @@
+/* Basic Skeleton Extension Styles */
+
+#basic-skeleton-group {
+    margin-right: 10px;
+}
+
+.basic-skeleton-button {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px 16px;
+}
+
+.basic-skeleton-button:hover {
+    background-color: rgba(0, 144, 210, 0.1) !important;
+}
+
+.basic-skeleton-button:focus {
+    outline: 2px solid #0090D2;
+    outline-offset: 2px;
+}

@@ -1,0 +1,15 @@
+{
+  "name": "BasicSkeleton",
+  "displayname": "Basic Skeleton Extension",
+  "description": "A basic skeleton extension template following official APS patterns",
+  "options": {},
+  "viewerversion": "7.*",
+  "loadonstartup": "false",
+  "filestoload": {
+    "cssfiles": ["main.css"],
+    "jsfiles": ["main.js"]
+  },
+  "bloglink": "",
+  "includeinlist": "false",
+  "editoptions": "false"
+}

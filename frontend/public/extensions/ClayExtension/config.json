@@ -1,0 +1,23 @@
+{
+  "name": "ClayExtension",
+  "displayname": "Clay Rendering Extension",
+  "description": "Apply clay-like materials to all model geometry for architectural visualization",
+  "options": {
+    "defaultClayColor": "#DDCCAA",
+    "clayTypes": [
+      { "name": "Beige Clay", "color": "#DDCCAA" },
+      { "name": "White Clay", "color": "#F5F5F5" },
+      { "name": "Terracotta", "color": "#CD853F" },
+      { "name": "Gray Clay", "color": "#999999" }
+    ]
+  },
+  "viewerversion": "7.*",
+  "loadonstartup": "false",
+  "filestoload": {
+    "cssfiles": ["main.css"],
+    "jsfiles": ["main.js"]
+  },
+  "bloglink": "",
+  "includeinlist": "true",
+  "editoptions": "true"
+}
